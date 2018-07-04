@@ -10,20 +10,24 @@ namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+     
 
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
-
-            return View();
+            SimpleDataStorage db = new SimpleDataStorage();
+            var catlist = db.Cats.ToList();
+            return View(db);
         }
 
-        public IActionResult Contact()
+        public IActionResult Contact(SimpleDataStorage db)
         {
+
+            for (int i = 0; i < 1000; i++)
+            {
+                db.Cats.Add(new Cat() { Name = "Caty McCat: " + i });
+            }
+            db.SaveChanges(true);
             ViewData["Message"] = "Your contact page.";
 
             return View();
@@ -31,7 +35,14 @@ namespace WebApplication1.Controllers
 
         public IActionResult Error()
         {
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Index()
+        {
+           
+            return View();
         }
     }
 }

@@ -1,7 +1,16 @@
-﻿@{
+﻿@model WebApplication1.Models.SimpleDataStorage
+@{
     ViewData["Title"] = "About";
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
+
+
+@foreach(var item in Model.Cats)
+{
+   <p>@item.Id</p>
+   <p>@item.Name</p>
+}
+
 
 <p>Use this area to provide additional information.</p>

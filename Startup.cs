@@ -4,8 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using WebApplication1.Models;
+
 
 namespace WebApplication1
 {
@@ -14,6 +18,13 @@ namespace WebApplication1
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            using(var client = new SimpleDataStorage())
+            {
+                //Create the database file at a path defined in SimpleDataStorage
+                client.Database.EnsureCreated();
+                //Create the database tables defined in SimpleDataStorage
+                client.Database.Migrate();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -22,6 +33,7 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
